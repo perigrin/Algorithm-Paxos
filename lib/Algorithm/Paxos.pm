@@ -1,4 +1,4 @@
-package Algorithm-Paxos;
+package Algorithm::Paxos;
 use Moose;
 use namespace::autoclean;
 
