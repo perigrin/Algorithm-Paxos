@@ -1,4 +1,5 @@
 package Algorithm::Paxos::Role::Proposer;
+use 5.10.0;
 use Moose::Role;
 use namespace::autoclean;
 
@@ -26,7 +27,7 @@ sub highest_proposal_id {
     return ( sort @successes )[0];
 }
 
-sub new_proposal_id { time() }
+sub new_proposal_id { state $i++ }
 
 sub prospose {
     my ( $self, $value ) = @_;
@@ -39,10 +40,11 @@ sub prospose {
 
     if ( $self->is_quorum(@replies) ) {
         my $v = $self->highest_proposal_id(@replies);
+        $v ||= $value;
         $_->accept( $n, $v ) for $self->acceptors;
         return $n;
     }
-    confess "Proposal Failed";
+    confess "Proposal failed to reach quorum";
 }
 
 1;
