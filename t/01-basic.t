@@ -16,9 +16,9 @@ use DDP;
 my @synod = map { BasicPaxos->new() } ( 0 .. 2 );
 
 # wire up acceptors
-$synod[0]->_set_acceptors( [ @synod[ 1, 2 ] ] );
-$synod[1]->_set_acceptors( [ @synod[ 0, 2 ] ] );
-$synod[1]->_set_acceptors( [ @synod[ 0, 1 ] ] );
+$synod[0]->_set_acceptors( \@synod );
+$synod[1]->_set_acceptors( \@synod );
+$synod[1]->_set_acceptors( \@synod );
 
 # wire learners
 $synod[0]->_set_learners( \@synod );
@@ -26,11 +26,10 @@ $synod[1]->_set_learners( \@synod );
 $synod[1]->_set_learners( \@synod );
 
 ok( !$synod[1]->proposal_count, 'no proposal recorded' );
- my $id = $synod[0]->prospose('Hello World');
- ok(defined $id, 'made a proposal' );
+my $id = $synod[0]->prospose('Hello World');
+ok( defined $id,               'made a proposal' );
 ok( $synod[1]->proposal_count, 'got a proposal recorded' );
 ok( $synod[1]->proposal($id) eq $synod[2]->proposal($id),
     'same proposal in two nodes' );
-
 
 done_testing();
