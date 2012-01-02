@@ -1,10 +1,7 @@
 package Algorithm::Paxos;
-use Moose;
-use namespace::autoclean;
 
-# ABSTRACT: My New App!
+# ABSTRACT: An implementation of the Paxos protocol
 
-
-__PACKAGE__->meta->make_immutable;
 1;
 __END__
+

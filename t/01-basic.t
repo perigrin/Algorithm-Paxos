@@ -1,7 +1,6 @@
 #!/usr/bin/env perl
 use strict;
 use Test::More;
-use DDP;
 {
 
     package BasicPaxos;
@@ -49,6 +48,5 @@ $synod[1]->_set_learners( \@synod );
     ok( $synod[1]->proposal($id) eq $synod[2]->proposal($id),
         'same proposal in two nodes' );
 }
-
 
 done_testing();
