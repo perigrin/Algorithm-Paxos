@@ -25,11 +25,30 @@ $synod[0]->_set_learners( \@synod );
 $synod[1]->_set_learners( \@synod );
 $synod[1]->_set_learners( \@synod );
 
-ok( !$synod[1]->proposal_count, 'no proposal recorded' );
-my $id = $synod[0]->prospose('Hello World');
-ok( defined $id,               'made a proposal' );
-ok( $synod[1]->proposal_count, 'got a proposal recorded' );
-ok( $synod[1]->proposal($id) eq $synod[2]->proposal($id),
-    'same proposal in two nodes' );
+{
+    ok( !$synod[1]->proposal_count, 'no proposal recorded' );
+    my $id = $synod[0]->prospose('Hello World');
+    ok( defined $id, 'made a proposal' );
+    is( $synod[1]->proposal_count, 1, 'got a proposal recorded' );
+    ok( $synod[1]->proposal($id) eq $synod[2]->proposal($id),
+        'same proposal in two nodes' );
+}
+
+{
+    my $id = $synod[0]->prospose('All good things');
+    ok( defined $id, 'made a proposal' );
+    is( $synod[1]->proposal_count, 2, 'got a proposal recorded' );
+    ok( $synod[1]->proposal($id) eq $synod[2]->proposal($id),
+        'same proposal in two nodes' );
+}
+
+{
+    my $id = $synod[0]->prospose('Must end');
+    ok( defined $id, 'made a proposal' );
+    is( $synod[1]->proposal_count, 3, 'got a proposal recorded' );
+    ok( $synod[1]->proposal($id) eq $synod[2]->proposal($id),
+        'same proposal in two nodes' );
+}
+
 
 done_testing();
