@@ -4,4 +4,3 @@ package Algorithm::Paxos;
 
 1;
 __END__
-

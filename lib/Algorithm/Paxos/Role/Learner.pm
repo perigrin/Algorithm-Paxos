@@ -2,6 +2,8 @@ package Algorithm::Paxos::Role::Learner;
 use Moose::Role;
 use namespace::autoclean;
 
+# ABSTRACT: A Learner role for the Paxos algorithm
+
 has proposals => (
     isa     => 'HashRef',
     traits  => ['Hash'],

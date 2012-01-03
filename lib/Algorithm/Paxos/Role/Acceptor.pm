@@ -2,6 +2,10 @@ package Algorithm::Paxos::Role::Acceptor;
 use Moose::Role;
 use namespace::autoclean;
 
+# ABSTRACT: An Acceptor role for the Paxos algorithm
+
+use Algorithm::Paxos::Exception;
+
 has [qw(last_prepared_id last_accepted_id)] => (
     isa     => 'Str',
     is      => 'rw',
@@ -25,7 +29,7 @@ sub _latest_proposal {
 sub prepare {
     my ( $self, $id ) = @_;
     my $last = $self->last_accepted_id;
-    confess "Prepared id does not exceed lastest prepared id." if $id < $last;
+    throw("Prepared id does not exceed lastest prepared id.") if $id < $last;
     $self->last_prepared_id($id);
     return 0 unless $self->proposal_count;
     return $self->last_accepted_id;
@@ -34,10 +38,23 @@ sub prepare {
 sub accept {
     my ( $self, $id, $value ) = @_;
     my $last = $self->last_prepared_id;
-    confess "Proposal id exceeds lastest prepared id." if $id < $last;
+    throw("Proposal id exceeds lastest prepared id.")
+        if $id < $last;
     $_->learn( $id => $value ) for $self->learners;
     return ( $id, $value );
 }
 
 1;
 __END__
+
+=head1 ATTRIBUTES
+
+=attr last_prepared_id
+
+=attr last_accepted_id
+
+=head1 METHODS 
+
+=method prepare
+
+=method accept

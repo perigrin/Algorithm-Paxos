@@ -3,6 +3,9 @@ use 5.10.0;
 use Moose::Role;
 use namespace::autoclean;
 
+# ABSTRACT: A Proposer role for the Paxos algorithm
+
+use Algorithm::Paxos::Exception;
 use Try::Tiny;
 
 has acceptors => (
@@ -44,7 +47,7 @@ sub prospose {
         $_->accept( $n, $v ) for $self->acceptors;
         return $n;
     }
-    confess "Proposal failed to reach quorum";
+    throw "Proposal failed to reach quorum";
 }
 
 1;
