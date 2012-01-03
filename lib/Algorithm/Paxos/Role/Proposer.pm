@@ -52,3 +52,48 @@ sub prospose {
 
 1;
 __END__
+
+=head1 DESCRIPTION
+
+From L<Wikipedia|http://en.wikipedia.org/wiki/Paxos_algorithm>
+
+    A Proposer advocates a client request, attempting to convince the
+    Acceptors to agree on it, and acting as a coordinator to move the protocol
+    forward when conflicts occur.
+
+=head1 SYNOPSIS
+
+    package MyApp::PaxosBasic;
+    use Moose;
+    
+    with qw(Algorithm::Paxos::Role::Proposer);
+    
+    1;
+    __END__
+    
+=method acceptors ( ) : @acceptors
+
+Returns a list of the acceptors.
+
+=method acceptor_count ( ) : $count
+
+Returns count of the number of acceptors.
+
+=method is_quorum ( @replies ) : $bool
+
+Takes a list of IDs and sees if they meet a quorum.
+
+=method highest_proposal_id ( @replies ) : $id 
+
+Takes a list of replies and returns the highest proposal id from the list.
+
+=method new_proposal_id ( ) : $id
+
+Generates a new proposal id. The default implementation is an increasing
+integer (literally C<$i++>).
+
+=method prospose ( $value ) : $id
+
+Propose is the main interface between clients and the Paxos cluster/node.
+Propose takes a single value (the proposal) and returns the ID that is
+assigned to that proposal. If the proposal fails an exception is thrown.

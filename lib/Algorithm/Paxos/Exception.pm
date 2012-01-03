@@ -1,8 +1,7 @@
 package Algorithm::Paxos::Exception;
 use Moose;
 
-# ABSTRACT: Simple sugar for Throwable::Error
-
+# ABSTRACT: Simple Sugar for Throwable::Error
 
 use Sub::Exporter::Util ();
 use Sub::Exporter -setup =>
@@ -29,7 +28,7 @@ This is a very thin sugar wrapper around L<Throwable::Error>.
     
     throw "Something failed";
 
-=method throw
+=func throw ( $message )
 
 Throw a new exception 
 
