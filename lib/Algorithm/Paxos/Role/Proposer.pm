@@ -5,8 +5,8 @@ use namespace::autoclean;
 
 # ABSTRACT: A Proposer role for the Paxos algorithm
 
-use Algorithm::Paxos::Exception;
 use Try::Tiny;
+use Algorithm::Paxos::Exception;
 
 has acceptors => (
     isa     => 'ArrayRef',
@@ -47,7 +47,7 @@ sub prospose {
         $_->accept( $n, $v ) for $self->acceptors;
         return $n;
     }
-    throw "Proposal failed to reach quorum";
+    throw("Proposal failed to reach quorum");
 }
 
 1;
